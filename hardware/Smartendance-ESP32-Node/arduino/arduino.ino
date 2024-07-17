@@ -114,14 +114,16 @@ void loop()
         {
             if (messageReceived)
             {
-                messageReceived = false;
                 parseCode(payloadRecv.code, payloadRecv.uid);
-                break;
+                messageReceived = false;
+                initializeText();
+                delay(500);
+                return;
             }
             delay(1);
         }
         parseCode("201", uid);
-        delay(2000);
+        messageReceived = false;
         initializeText();
     }
     else
