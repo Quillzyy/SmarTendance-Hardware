@@ -29,7 +29,7 @@ struct_message payloadRecv;
 
 // Function declarations
 void onSend(const uint8_t *mac_addr, esp_now_send_status_t status);
-void onRecv(const uint8_t *recv_info, const uint8_t *data, int data_len);
+void onRecv(const esp_now_recv_info_t *recv_info, const uint8_t *data, int data_len);
 void parseCode(String code, String uid);
 String readUID();
 bool waitForConfirmation();
@@ -138,7 +138,7 @@ void onSend(const uint8_t *mac_addr, esp_now_send_status_t status)
     Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Send Success" : "Send Fail");
 }
 
-void onRecv(const uint8_t *recv_info, const uint8_t *data, int data_len)
+void onRecv(const esp_now_recv_info_t *recv_info, const uint8_t *data, int data_len)
 {
     messageReceived = true;
 
