@@ -78,12 +78,15 @@ void onRecv(uint8_t *mac, uint8_t *data, uint8_t len)
   router2.write((uint8_t *)&payloadRecv, sizeof(payloadRecv));
 
   unsigned long startTime = millis();
+  unsigned long currentTime = millis();
   bool confirmation = false;
-  while (millis() - startTime < 1000)
+  while (currentTime - startTime < 2000)
   {
+    currentTime = millis();
+    delay(100);
     if (router2.available())
     {
-      router2.readBytes((char *)&payloadRecv, sizeof(payloadRecv));
+      router2.readBytes((uint8_t *)&payloadRecv, sizeof(payloadRecv));
       Serial.print(millis());
       Serial.print(" -> ");
       Serial.print("Received serial to router2: ");
@@ -93,7 +96,9 @@ void onRecv(uint8_t *mac, uint8_t *data, uint8_t len)
       Serial.print(" - ");
       Serial.println(payloadRecv.code);
       confirmation = true;
+      break;
     }
+    delay(100);
   }
   if (!confirmation)
   {
@@ -101,8 +106,12 @@ void onRecv(uint8_t *mac, uint8_t *data, uint8_t len)
     strcpy(payloadRecv.code, "201");
     Serial.print(millis());
     Serial.print(" -> ");
-    Serial.print("Not received serial");
+    Serial.print("Not received serial: ");
     Serial.print(sizeof(payloadRecv));
+    Serial.print(" bytes - ");
+    Serial.print(payloadRecv.uid);
+    Serial.print(" - ");
+    Serial.println(payloadRecv.code);
   }
 
   // Send data back

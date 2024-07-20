@@ -32,7 +32,6 @@ void onSend(const uint8_t *mac_addr, esp_now_send_status_t status);
 void onRecv(const uint8_t *recv_info, const uint8_t *data, int data_len);
 void parseCode(String code, String uid);
 String readUID();
-bool waitForConfirmation();
 void initializeText();
 
 void setup()
@@ -110,7 +109,7 @@ void loop()
 
         // Wait for 3 seconds to receive reply
         time_t start = millis();
-        while (millis() - start < 3000)
+        while (millis() - start < 2500)
         {
             if (messageReceived)
             {
